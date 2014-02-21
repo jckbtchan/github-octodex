@@ -21,7 +21,8 @@
         <activity
             android:name="com.jckbt.github.octodex.ImageGridActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,7 +37,9 @@
                 <data android:scheme="flickrj-android-oauth" />
             </intent-filter>
         </activity>
-        <activity android:name=".ImagePagerActivity" />
+        <activity
+            android:name=".ImagePagerActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

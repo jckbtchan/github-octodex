@@ -9,10 +9,10 @@ import com.googlecode.flickrjandroid.oauth.OAuthInterface;
 
 public class GetOAuthTokenTask extends AsyncTask<String, Integer, OAuth> {
 
-    private ImageGridActivity mainActivity;
+    private ImageGridActivity imageGridActivity;
 
     public GetOAuthTokenTask(ImageGridActivity activity) {
-        mainActivity = activity;
+        imageGridActivity = activity;
     }
 
     @Override
@@ -33,8 +33,8 @@ public class GetOAuthTokenTask extends AsyncTask<String, Integer, OAuth> {
 
     @Override
     protected void onPostExecute(OAuth result) {
-        if (mainActivity != null) {
-            mainActivity.onOAuthDone(result);
+        if (imageGridActivity != null) {
+            imageGridActivity.onOAuthDone(result);
         }
     }
 

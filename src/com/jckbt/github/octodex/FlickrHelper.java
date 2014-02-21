@@ -3,6 +3,9 @@ package com.jckbt.github.octodex;
 
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.REST;
+import com.googlecode.flickrjandroid.RequestContext;
+import com.googlecode.flickrjandroid.oauth.OAuth;
+import com.googlecode.flickrjandroid.oauth.OAuthToken;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -27,6 +30,15 @@ public class FlickrHelper {
         } catch (ParserConfigurationException e) {
             return null;
         }
+    }
+
+    public Flickr getFlickrAuthed(String token, String secret) {
+        Flickr f = getFlickr();
+        RequestContext requestContext = RequestContext.getRequestContext();
+        OAuth auth = new OAuth();
+        auth.setToken(new OAuthToken(token, secret));
+        requestContext.setOAuth(auth);
+        return f;
     }
 
 }
