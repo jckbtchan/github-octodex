@@ -3,4 +3,4 @@ github-octodex
 
 Github Octodex
 
-Github�İ�צ��ͼƬչʾ��
+Github的形象－八爪鱼的图片展示。
