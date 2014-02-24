@@ -31,7 +31,7 @@ public class LoadPhotostreamTask extends AsyncTask<OAuth, Void, String[]> {
                 String[] imageUrls = new String[length];
                 for (int i = 0; i < photoList.size(); i++) {
                     Photo photo = photoList.get(i);
-                    imageUrls[i] = photo.getLargeSquareUrl();
+                    imageUrls[i] = photo.getOriginalUrl();
                 }
                 return imageUrls;
             }

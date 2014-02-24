@@ -56,18 +56,19 @@ public class ImageGridActivity extends Activity {
 
         listView = (GridView) findViewById(R.id.gridview);
         listView.setOnScrollListener(new PauseOnScrollListener(imageLoader, false, true));
-        ((GridView) listView).setAdapter(new ImageGridAdapter());
-        listView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startImagePagerActivity(position);
-            }
-        });
 
-        OAuth oauth = OAuthTokenHelper.getInstance(this).getOAuthToken();
+        OAuthTokenHelper oAuthTokenHelper = OAuthTokenHelper.getInstance(this);
+        OAuth oauth = oAuthTokenHelper.getOAuthToken();
         if (oauth == null || oauth.getUser() == null) {
-            OAuthTask task = new OAuthTask(this);
-            task.execute();
+            oAuthTokenHelper.saveOAuthToken("jckbte", "114004506@N06", "72157641292143614",
+                    "891d7f78b7308673");
+            oauth = oAuthTokenHelper.getOAuthToken();
+            if (oauth == null || oauth.getUser() == null) {
+                OAuthTask task = new OAuthTask(this);
+                task.execute();
+            } else {
+                load(oauth);
+            }
         } else {
             load(oauth);
         }
@@ -75,17 +76,8 @@ public class ImageGridActivity extends Activity {
 
     private void load(OAuth oauth) {
         if (oauth != null) {
-            OAuthToken token = oauth.getToken();
-            System.out.println("Token______" + token.getOauthToken());
-            System.out.println("TokenSecret______" + token.getOauthTokenSecret());
+            new LoadPhotostreamTask(this).execute(oauth);
         }
-    }
-
-    private void startImagePagerActivity(int position) {
-        Intent intent = new Intent(this, ImagePagerActivity.class);
-        intent.putExtra("images", imageUrls);
-        intent.putExtra("positin", position);
-        startActivity(intent);
     }
 
     @Override
@@ -137,7 +129,28 @@ public class ImageGridActivity extends Activity {
     }
 
     public void getImageUrlsDone(String[] imageUrls) {
+        this.imageUrls = imageUrls;
 
+        ((GridView) listView).setAdapter(new ImageGridAdapter());
+        listView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                startImagePagerActivity(position);
+            }
+        });
+    }
+
+    private void startImagePagerActivity(int position) {
+        Intent intent = new Intent(this, ImagePagerActivity.class);
+        intent.putExtra("images", imageUrls);
+        intent.putExtra("positin", position);
+        startActivity(intent);
+    }
+    
+    @Override
+    public void onBackPressed() {
+        imageLoader.stop();
+        super.onBackPressed();
     }
 
     private class ImageGridAdapter extends BaseAdapter {
